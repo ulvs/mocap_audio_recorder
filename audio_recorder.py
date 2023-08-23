@@ -36,6 +36,7 @@ from PySide6.QtCore import QThread, Signal, QObject, QUrl
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QTextEdit, QLabel, QComboBox, QWidget,QLineEdit
 from PySide6.QtMultimedia import QAudioInput, QMediaCaptureSession, QMediaRecorder, QMediaFormat, QMediaDevices
 from PySide6.QtGui import QIcon
+import resources_rc
 
 
 def clean_xml_data(data):
@@ -207,7 +208,7 @@ class RecorderGUI(QMainWindow):
     def __init__(self, recorder, udp_controller):
         super().__init__()
         self.setWindowTitle("Mocap Audio Recorder")
-        self.setWindowIcon(QIcon('app_icon.ico'))
+        self.setWindowIcon(QIcon(":/app_icon.ico"))
         self.recorder = recorder
         self.udp_controller = udp_controller
         self.recorder.log_message.connect(self.log_message)
