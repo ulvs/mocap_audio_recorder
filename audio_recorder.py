@@ -35,6 +35,7 @@ from xml.etree import ElementTree as ET
 from PySide6.QtCore import QThread, Signal, QObject, QUrl
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QTextEdit, QLabel, QComboBox, QWidget,QLineEdit
 from PySide6.QtMultimedia import QAudioInput, QMediaCaptureSession, QMediaRecorder, QMediaFormat, QMediaDevices
+from PySide6.QtGui import QIcon
 
 
 def clean_xml_data(data):
@@ -142,7 +143,6 @@ class UDPAudioController(QThread):
     def port(self, value):
         #if self.running:
          #   raise ValueError("Can't change port while the service is running")
-        print("Changing port")
         # Close the existing socket if it's open
 
         self._port = value
@@ -166,17 +166,11 @@ class UDPAudioController(QThread):
             self.errorOccurred.emit(f"Socket Error: {str(e)}")
             self.sock = None
             return
-        print("Running")
-        print("Port: ", self.port)
-        print("Socket: ", self.sock)
         self.running = True
         while self.running:
             try:
-                print("Waiting for data")
                 data, addr = self.sock.recvfrom(1024)
-                print("Data received")
             except socket.error:
-                print("Socket error")
                 break
             data_str = data.decode('utf-8')
             cleaned_data_str = clean_xml_data(data_str)
@@ -191,7 +185,6 @@ class UDPAudioController(QThread):
                 continue
 
             self.received_packet_ids.add(packet_id)
-            print("Packet ID: ", packet_id)
             command = root.tag
             if command == 'CaptureStart':
                 filename = root.find("./Name").get("VALUE")
@@ -204,10 +197,7 @@ class UDPAudioController(QThread):
 
     def stop(self):  # Add this method to stop the thread
         self.running = False
-        print("Stopping")
-        print(self.sock)
         if self.sock:
-            print("Closing socket")
             self.sock.close()
             self.socket_closed = True
         self.wait()  # Wait for the thread to finish
@@ -216,6 +206,8 @@ class UDPAudioController(QThread):
 class RecorderGUI(QMainWindow):
     def __init__(self, recorder, udp_controller):
         super().__init__()
+        self.setWindowTitle("Mocap Audio Recorder")
+        self.setWindowIcon(QIcon('app_icon.ico'))
         self.recorder = recorder
         self.udp_controller = udp_controller
         self.recorder.log_message.connect(self.log_message)
