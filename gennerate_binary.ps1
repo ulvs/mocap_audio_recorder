@@ -1,0 +1,1 @@
+pyinstaller --onefile --noconsole --icon=app_icon.ico --name MocapAudioRecorder .\audio_recorder.py
