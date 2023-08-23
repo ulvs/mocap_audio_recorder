@@ -2,6 +2,8 @@
 
 This is an audio recording application designed specifically to work in conjunction with motion capture software. It listens for UDP packets to start and stop audio recordings, providing an effortless way to record reference audio in sync with motion capture data. While it's tailored for Qualisys mocap systems, it is compatible with any motion capture software that sends UDP start/stop commands.
 
+Use-cases might be to record comments on the recording during the session to repace notes.
+
 ## Features
 
 - **Seamless Integration with Motion Capture**: Automatically starts and stops audio recordings based on UDP commands, ensuring synchronicity with motion capture sessions.
